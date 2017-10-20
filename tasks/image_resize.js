@@ -29,12 +29,19 @@ module.exports = function(grunt) {
       crop: false,
       gravity: 'Center',
       quality: 1,
-      autoOrient: false
+      autoOrient: false,
+      extent: false
     });
     var series = [];
 
     if (options.height == null && options.width == null) {
       return grunt.fail.warn("Neither height nor width defined.");
+    }
+    if (options.height == null && options.width) {
+      options.height = 0;
+    }
+    if (options.width == null && options.height) {
+      options.width = 0;
     }
 
     // Iterate over all specified file groups.
@@ -48,7 +55,8 @@ module.exports = function(grunt) {
           width:    options.width,
           height:   options.height,
           quality:  options.quality,
-          autoOrient: options.autoOrient
+          autoOrient: options.autoOrient,
+          background: options.background
         };
 
         // Prevent failing if destination directory does not exist.
@@ -81,8 +89,16 @@ module.exports = function(grunt) {
                   .gravity(options.gravity)
                   .crop(imOptions.width, imOptions.height);
               } else {
-                resizer = gm(filepath)
-                  .resize(imOptions.width, imOptions.height);
+                if ( options.extent ){
+                  resizer = gm(filepath)
+                    .gravity(options.gravity)
+                    .extent(imOptions.width, imOptions.height)
+                    .background(imOptions.background);
+                }
+                else {
+                  resizer = gm(filepath)
+                    .resize(imOptions.width, imOptions.height);
+                }
               }
 
               if (options.autoOrient) {
