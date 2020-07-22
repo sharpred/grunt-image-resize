@@ -58,6 +58,7 @@ exports.image_resize = {
         // setup here if necessary
         done();
     },
+    
     resize: function (test) {
         test.expect(12);
 
@@ -113,6 +114,7 @@ exports.image_resize = {
 
         createTest(test, "rotate.jpg")(test.done);
     },
+    
     all: function (test) {
         test.expect(30);
 

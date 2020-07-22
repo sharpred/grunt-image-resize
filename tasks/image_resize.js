@@ -34,15 +34,12 @@ module.exports = function (grunt) {
         });
         var series = [];
 
+        grunt.log.ok(JSON.stringify(options));
+
         if (options.height == null && options.width == null) {
             return grunt.fail.warn("Neither height nor width defined.");
         }
-        if (options.height == null && options.width) {
-            options.height = 0;
-        }
-        if (options.width == null && options.height) {
-            options.width = 0;
-        }
+
 
         // Iterate over all specified file groups.
         this.files.forEach(function (list) {
@@ -112,7 +109,7 @@ module.exports = function (grunt) {
                                 .quality(Math.floor(imOptions.quality * 100))
                                 .write(imOptions.dstPath, function (err) {
                                     if (err) {
-                                        grunt.fail.warn(err.message);
+                                        grunt.fail.warn('Image ' + filepath + ' resized failed with ' + err.message);
                                     } else {
                                         grunt.log.ok('Image ' + filepath + ' resized to ' + list.dest);
                                     }
